@@ -1,0 +1,77 @@
+mixin comment(commentData)
+  .comment
+    if commentData.postedByAdmin
+      em (Posted By Admin)
+    .date= commentData.date
+    .author= commentData.author
+    .text= commentData.text
+
+doctype html
+html(lang="en")
+  head
+    meta(charset="UTF-8")
+    meta(name="viewport", content="width=device-width, initial-scale=1.0")
+    link(rel="stylesheet" href='style.css')
+    style.
+      p {
+        color: red;
+        text-decoration: underline;
+      }
+    title Pug Tutorial
+  body
+    include includes/nav
+    h2#pageTitle Pug Tutorial
+    p.paragraph. 
+      This is Text
+      And this is a new line
+    ul
+      li(style='color: green;text-transform: uppercase') This is Item 1
+      - const styles = {'color':'gold', 'text-transform':'uppercase'};
+      li(style=styles) This is Item 2
+      li This is Item 3
+    .display-box
+    #my-div
+    input(type='password' name='password' data-js=`${ 5 > 2 ?' Ok' : 'Not Ok'}`)
+    - const myClasses = ['class1','class2','class3']
+    div.my-div(class=myClasses)
+    - const myStyles = {'color':'red','background-color':'blue'}
+    div(style=myStyles)
+    - const myAttributes = {'src':'https://source.unsplash.com/random/533x300','alt':'This is my Photo'}
+    img&attributes(myAttributes)
+    input(type='text' disabled=true)
+    - let grades = {'Web Dev':85,'Software Design':76}
+    each n, i in grades
+      p=`${n}-${i}`
+    - grades = {'Web Dev':100,'Software Design':86}
+    for n, i in grades
+      p=`${n}-${i}`
+    for n, i in []
+      p=`${n}-${i}`
+    else
+      strong No values are here
+    h2 My Web application
+    - let user = {name: 'Domenic', loggedIn: false, lastLogin: 6}
+    if user.loggedIn
+      p
+        | Welcome back,
+        strong #{user.name}
+    else if user.lastLogin < 10
+      p Your last login was #{user.lastLogin} minutes ago.
+      p
+        a(href='/login') Login again
+    else
+      a(href='/login') Login 
+    - const orderStatus = 'Completed'
+    case orderStatus
+      when 'Pending'
+        p Your order has been placed and will be sent shortly.
+      when 'in_Transit'
+        p Your order is on the move - you should receive it soon
+      when 'Completed'
+        p Your order has been completed
+      default
+        p Sorry we not sure what happened to your order
+    - const c = [{postedByAdmin: true,date: '04-02-2020', author: 'dcode', text: 'Nice tutorials'},{postedByAdmin: false,date: `${new Date().getMonth() + 1}-${new Date().getDate()}-${new Date().getFullYear()}`, author: 'JR', text: 'Hello world'}]
+    +comment(c[0])
+    +comment(c[1])
+      
